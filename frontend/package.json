@@ -1,0 +1,20 @@
+{
+  "name": "gdrive-uploader-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Google Drive Uploader",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "serve dist -l $PORT"
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

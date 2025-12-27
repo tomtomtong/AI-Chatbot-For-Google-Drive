@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Drive Uploader</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Google Drive File Uploader</h1>
+        </header>
+
+        <main>
+            <div id="auth-section" class="section">
+                <div id="login-view">
+                    <h2>Connect to Google Drive</h2>
+                    <p>Sign in with your Google account to upload files to Google Drive.</p>
+                    <button id="login-btn" class="btn btn-primary">Sign in with Google</button>
+                </div>
+
+                <div id="authenticated-view" class="hidden">
+                    <div class="user-info">
+                        <h2>Connected to Google Drive</h2>
+                        <button id="logout-btn" class="btn btn-secondary">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="upload-section" class="section hidden">
+                <h2>Upload Files</h2>
+                <div class="upload-area">
+                    <div class="upload-hint-container">
+                        <label for="upload-hint-input" class="upload-hint-label">Describe where to organize this file (optional):</label>
+                        <input type="text" id="upload-hint-input" class="upload-hint-input" 
+                            placeholder="e.g., 'work documents', 'vacation photos'" autocomplete="off" />
+                        <p class="upload-hint-help">AI will auto-organize based on your description, filename, and file type.</p>
+                    </div>
+                    <input type="file" id="file-input" style="display: none;" />
+                    <button id="upload-btn" class="btn btn-primary">Select File to Upload</button>
+                    <div id="upload-status" class="status-message"></div>
+                </div>
+                <div id="upload-history" class="upload-history">
+                    <h3>Recent Uploads</h3>
+                    <div id="history-list"></div>
+                </div>
+            </div>
+
+            <div id="folder-structure-section" class="section hidden">
+                <div class="folder-header">
+                    <h2>Google Drive Folder Structure</h2>
+                    <button id="refresh-folders-btn" class="btn btn-secondary">Refresh</button>
+                </div>
+                <div id="folder-structure-container">
+                    <div id="folder-loading" class="loading-message">Loading folder structure...</div>
+                    <div id="folder-tree" class="folder-tree"></div>
+                </div>
+            </div>
+
+            <div id="chatbot-section" class="section hidden">
+                <div class="chatbot-header">
+                    <h2>🤖 Google Drive Assistant</h2>
+                    <p class="chatbot-subtitle">Ask me to create folders, move files, or help with your Google Drive</p>
+                </div>
+                <div id="chat-container" class="chat-container">
+                    <div id="chat-messages" class="chat-messages">
+                        <div class="chat-message bot-message">
+                            <div class="message-content">
+                                <p>Hello! I'm your Google Drive assistant. I can help you create folders, move files, and search your Drive.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="chat-input-container" class="chat-input-container">
+                        <input type="text" id="chat-input" class="chat-input" 
+                            placeholder="Type your message here..." autocomplete="off" />
+                        <button id="chat-send-btn" class="btn btn-primary chat-send-btn">Send</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
