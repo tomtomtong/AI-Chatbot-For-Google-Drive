@@ -173,6 +173,75 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Noscript content for crawlers and users without JavaScript -->
+    <noscript>
+        <div style="max-width: 800px; margin: 2rem auto; padding: 2rem; font-family: system-ui, -apple-system, sans-serif; line-height: 1.6;">
+            <h1>Open Source Google Drive Organizer</h1>
+            <p><strong>An AI-powered tool that automatically organizes your Google Drive files. Try it free or host it yourself - completely open source!</strong></p>
+            
+            <h2>What This App Does</h2>
+            <p>Open Source Google Drive Organizer is a free, web-based productivity tool that helps users organize files in Google Drive using artificial intelligence. When you upload a file with a natural language description, the AI analyzes your description, filename, and existing folder structure to automatically place the file in the most appropriate location.</p>
+            
+            <h2>Key Features</h2>
+            <ul>
+                <li><strong>AI-Powered File Organization</strong>: Automatically suggests and creates the best folder location for uploaded files based on natural language descriptions</li>
+                <li><strong>Google Drive Integration</strong>: Securely connects to your Google Drive via OAuth 2.0 authentication</li>
+                <li><strong>Smart Folder Suggestions</strong>: AI examines your existing folder structure to find the perfect place for each file</li>
+                <li><strong>Easy File Upload</strong>: Simple drag-and-drop or click-to-upload interface with optional description field</li>
+                <li><strong>Folder Structure Viewer</strong>: Visual tree view of your entire Google Drive folder hierarchy</li>
+                <li><strong>100% Open Source</strong>: Full source code available on GitHub for transparency and self-hosting</li>
+                <li><strong>Self-Hostable</strong>: Deploy on Railway, Vercel, or any Node.js hosting platform for complete data control</li>
+            </ul>
+            
+            <h2>How It Works</h2>
+            <ol>
+                <li><strong>Connect Your Google Drive</strong>: Securely authenticate with Google OAuth. We only request the minimum permissions needed.</li>
+                <li><strong>Upload & Describe</strong>: Select a file and add a brief description like "work documents" or "vacation photos".</li>
+                <li><strong>AI Organizes for You</strong>: Our AI analyzes your description and folder structure to place the file in the perfect location.</li>
+            </ol>
+            
+            <h2>Use Cases</h2>
+            <ul>
+                <li><strong>Personal File Organization</strong>: Keep your personal Google Drive tidy without manual folder management</li>
+                <li><strong>Work Document Management</strong>: Automatically organize work files into appropriate project folders</li>
+                <li><strong>Photo Organization</strong>: Sort vacation photos, screenshots, and images into logical albums</li>
+                <li><strong>Research Materials</strong>: Organize academic papers, notes, and resources by topic or project</li>
+                <li><strong>Small Team Collaboration</strong>: Shared Drive organization for small teams</li>
+            </ul>
+            
+            <h2>Technical Stack</h2>
+            <p>Frontend: Vanilla JavaScript, HTML5, CSS3, Vite | Backend: Node.js, Express.js | Authentication: Google OAuth 2.0 | AI: OpenRouter API integration | Hosting: Railway (default), supports any Node.js platform</p>
+            
+            <h2>Privacy & Security</h2>
+            <ul>
+                <li>Uses Google's official OAuth 2.0 for secure authentication</li>
+                <li>Only requests minimum necessary Drive permissions</li>
+                <li>No file content is stored on our servers</li>
+                <li>Session-based authentication with secure cookies</li>
+                <li>Open source code for full transparency</li>
+            </ul>
+            
+            <h2>Getting Started</h2>
+            <p>To use this application, please enable JavaScript in your browser. The app requires JavaScript to function properly.</p>
+            <p>Visit the main page with JavaScript enabled to connect your Google Drive and start organizing files automatically.</p>
+            
+            <h2>Resources</h2>
+            <ul>
+                <li><a href="/llms.txt">LLM Documentation (llms.txt)</a> - Brief description for AI search engines</li>
+                <li><a href="/llms-full.txt">Complete LLM Documentation (llms-full.txt)</a> - Detailed documentation for AI search engines</li>
+                <li><a href="https://github.com/tomtomtong/onlineChatForGoogleDrive" target="_blank" rel="noopener noreferrer">GitHub Repository</a> - View source code and contribute</li>
+                <li><a href="https://github.com/tomtomtong/onlineChatForGoogleDrive#readme" target="_blank" rel="noopener noreferrer">Documentation</a> - Full deployment and usage guide</li>
+            </ul>
+            
+            <h2>Contact</h2>
+            <p>Email: <a href="mailto:tomtomtongtong@gmail.com">tomtomtongtong@gmail.com</a></p>
+            <p>GitHub: <a href="https://github.com/tomtomtong/onlineChatForGoogleDrive" target="_blank" rel="noopener noreferrer">github.com/tomtomtong/onlineChatForGoogleDrive</a></p>
+            
+            <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+            <p><small><strong>Note:</strong> This application requires JavaScript to function. Please enable JavaScript in your browser to use the full features of this tool.</small></p>
+        </div>
+    </noscript>
+    
     <div class="container" role="main">
         <header class="main-header" role="banner">
             <h1>Open Source Drive Organizer</h1>
