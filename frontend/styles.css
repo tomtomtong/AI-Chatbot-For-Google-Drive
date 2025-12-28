@@ -283,6 +283,35 @@ body::before {
     font-weight: 600;
 }
 
+/* Connect Section */
+.connect-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+    border-radius: 12px;
+    border: 1px solid #e8eaf6;
+    text-align: center;
+}
+
+.connect-text {
+    font-size: 1rem;
+    color: #202124;
+    margin: 0;
+    font-weight: 500;
+}
+
+.connect-email {
+    color: #4285f4;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.connect-email:hover {
+    color: #3367d6;
+    text-decoration: underline;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .hero-title {
