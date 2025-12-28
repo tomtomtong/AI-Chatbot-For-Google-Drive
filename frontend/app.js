@@ -236,42 +236,129 @@ class GoogleDriveUploader {
 
 
   async handleUpload(e) {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = Array.from(e.target.files);
+    if (!files || files.length === 0) return;
 
     const uploadBtn = document.getElementById('upload-btn');
     const hintInput = document.getElementById('upload-hint-input');
+    const progressContainer = document.getElementById('upload-progress-container');
+    
     uploadBtn.disabled = true;
-    uploadBtn.textContent = 'Uploading...';
-
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('hint', hintInput.value.trim());
-
-      const res = await fetch(`${API_URL}/api/upload`, {
-        method: 'POST',
-        body: formData,
-        credentials: 'include'
-      });
-      const result = await res.json();
-
-      if (result.success) {
-        this.showStatus(result.message, 'success');
-        this.addToHistory(result.file);
-        this.renderUploadHistory();
-        hintInput.value = '';
-        if (result.moved) this.loadFolderStructure();
-      } else {
-        this.showStatus(result.message, 'error');
-      }
-    } catch (error) {
-      this.showStatus('Upload failed', 'error');
-    } finally {
-      uploadBtn.disabled = false;
-      uploadBtn.textContent = 'Select File to Upload';
-      e.target.value = '';
+    uploadBtn.textContent = files.length === 1 ? 'Uploading...' : `Uploading ${files.length} files...`;
+    
+    // Show progress container for multiple files
+    if (files.length > 1) {
+      progressContainer.style.display = 'block';
+      progressContainer.innerHTML = '';
     }
+
+    const hint = hintInput.value.trim();
+    let successCount = 0;
+    let errorCount = 0;
+    let movedCount = 0;
+    const results = [];
+
+    // Upload files sequentially to avoid overwhelming the server
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      
+      // Show progress for this file
+      if (files.length > 1) {
+        this.showFileProgress(file.name, i + 1, files.length, 'uploading');
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('hint', hint);
+
+        const res = await fetch(`${API_URL}/api/upload`, {
+          method: 'POST',
+          body: formData,
+          credentials: 'include'
+        });
+        const result = await res.json();
+
+        if (result.success) {
+          successCount++;
+          if (result.moved) movedCount++;
+          this.addToHistory(result.file);
+          results.push({ file: result.file, success: true });
+          
+          if (files.length > 1) {
+            this.showFileProgress(file.name, i + 1, files.length, 'success');
+          } else {
+            this.showStatus(result.message, 'success');
+          }
+        } else {
+          errorCount++;
+          results.push({ file: { name: file.name }, success: false, error: result.message });
+          
+          if (files.length > 1) {
+            this.showFileProgress(file.name, i + 1, files.length, 'error', result.message);
+          } else {
+            this.showStatus(result.message, 'error');
+          }
+        }
+      } catch (error) {
+        errorCount++;
+        results.push({ file: { name: file.name }, success: false, error: error.message });
+        
+        if (files.length > 1) {
+          this.showFileProgress(file.name, i + 1, files.length, 'error', error.message);
+        } else {
+          this.showStatus('Upload failed', 'error');
+        }
+      }
+    }
+
+    // Show summary for multiple files
+    if (files.length > 1) {
+      const summary = `Uploaded ${successCount} of ${files.length} file${files.length > 1 ? 's' : ''}${movedCount > 0 ? ` (${movedCount} organized)` : ''}`;
+      this.showStatus(successCount === files.length ? summary : `${summary}. ${errorCount} failed.`, 
+                     successCount === files.length ? 'success' : 'error');
+      
+      // Hide progress container after a delay
+      setTimeout(() => {
+        progressContainer.style.display = 'none';
+      }, 5000);
+    }
+
+    // Update history and folder structure if needed
+    if (successCount > 0) {
+      this.renderUploadHistory();
+      if (movedCount > 0) this.loadFolderStructure();
+    }
+
+    // Clear input
+    hintInput.value = '';
+    uploadBtn.disabled = false;
+    uploadBtn.textContent = 'Select Files to Upload';
+    e.target.value = '';
+  }
+
+  showFileProgress(fileName, current, total, status, errorMessage = '') {
+    const progressContainer = document.getElementById('upload-progress-container');
+    const fileId = `progress-${current}`;
+    let progressItem = document.getElementById(fileId);
+    
+    if (!progressItem) {
+      progressItem = document.createElement('div');
+      progressItem.id = fileId;
+      progressItem.className = 'upload-progress-item';
+      progressContainer.appendChild(progressItem);
+    }
+
+    const statusIcon = status === 'success' ? '✓' : status === 'error' ? '✗' : '⟳';
+    const statusClass = status === 'success' ? 'success' : status === 'error' ? 'error' : 'uploading';
+    const shortName = fileName.length > 40 ? fileName.substring(0, 37) + '...' : fileName;
+    
+    progressItem.innerHTML = `
+      <span class="progress-icon ${statusClass}">${statusIcon}</span>
+      <span class="progress-text">[${current}/${total}] ${this.escapeHtml(shortName)}</span>
+      ${errorMessage ? `<span class="progress-error">${this.escapeHtml(errorMessage)}</span>` : ''}
+    `;
+    progressItem.className = `upload-progress-item ${statusClass}`;
   }
 
   showStatus(message, type) {

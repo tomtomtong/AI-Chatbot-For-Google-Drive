@@ -373,6 +373,86 @@ body {
 }
 .upload-hint-help { font-size: 12px; color: #666666; margin: 0; }
 
+/* Upload Progress */
+.upload-progress-container {
+    margin-top: 16px;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    background: #ffffff;
+    padding: 12px;
+}
+
+.upload-progress-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #f9f9f9;
+    font-size: 0.9rem;
+}
+
+.upload-progress-item:last-child {
+    margin-bottom: 0;
+}
+
+.upload-progress-item.success {
+    background: #f0f9f0;
+    border-color: #4caf50;
+}
+
+.upload-progress-item.error {
+    background: #fff5f5;
+    border-color: #f44336;
+}
+
+.upload-progress-item.uploading {
+    background: #f5f5f5;
+    border-color: #2196f3;
+}
+
+.progress-icon {
+    font-weight: bold;
+    font-size: 1.1rem;
+    min-width: 20px;
+    text-align: center;
+}
+
+.progress-icon.success {
+    color: #4caf50;
+}
+
+.progress-icon.error {
+    color: #f44336;
+}
+
+.progress-icon.uploading {
+    color: #2196f3;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.progress-text {
+    flex: 1;
+    color: #000000;
+    word-break: break-word;
+}
+
+.progress-error {
+    color: #f44336;
+    font-size: 0.85rem;
+    margin-top: 4px;
+    font-style: italic;
+}
+
 .status-message { margin-top: 20px; padding: 12px; border-radius: 0; font-weight: 500; border: 1px solid #000000; }
 .status-message.success { background: #ffffff; color: #000000; border-color: #000000; }
 .status-message.error { background: #ffffff; color: #000000; border-color: #000000; }
