@@ -16,6 +16,7 @@ class GoogleDriveUploader {
     this.bindEvents();
     await this.checkAuthStatus();
     this.renderUploadHistory();
+    this.loadVisitorCount();
     console.log('[App] Initialization complete');
   }
 
@@ -458,6 +459,41 @@ class GoogleDriveUploader {
     div.innerHTML = `<div class="message-content">${this.escapeHtml(content).replace(/\n/g, '<br>')}</div>`;
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
+  }
+
+  async loadVisitorCount() {
+    try {
+      // First, increment the visitor count (this visit)
+      const res = await fetch(`${API_URL}/api/visitors`, { 
+        credentials: 'include',
+        cache: 'no-store'
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const countEl = document.getElementById('visitor-count');
+        if (countEl) {
+          countEl.textContent = data.count.toLocaleString();
+        }
+      }
+    } catch (error) {
+      console.error('[Visitor] Error loading visitor count:', error);
+      // Try to get count without incrementing as fallback
+      try {
+        const res = await fetch(`${API_URL}/api/visitors/count`, { 
+          credentials: 'include',
+          cache: 'no-store'
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const countEl = document.getElementById('visitor-count');
+          if (countEl) {
+            countEl.textContent = data.count.toLocaleString();
+          }
+        }
+      } catch (fallbackError) {
+        console.error('[Visitor] Fallback also failed:', fallbackError);
+      }
+    }
   }
 }
 

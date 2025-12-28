@@ -7,6 +7,7 @@ const multer = require('multer');
 const https = require('https');
 const { Readable } = require('stream');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -121,6 +122,46 @@ function getAuthenticatedClient(req) {
   return oauth2Client;
 }
 
+
+// Visitor counter storage
+const VISITOR_COUNT_FILE = path.join(__dirname, 'visitor-count.json');
+
+// Initialize visitor count
+function getVisitorCount() {
+  try {
+    if (fs.existsSync(VISITOR_COUNT_FILE)) {
+      const data = fs.readFileSync(VISITOR_COUNT_FILE, 'utf8');
+      return JSON.parse(data).count || 0;
+    }
+  } catch (error) {
+    console.error('[Visitor] Error reading visitor count:', error);
+  }
+  return 0;
+}
+
+function incrementVisitorCount() {
+  try {
+    const currentCount = getVisitorCount();
+    const newCount = currentCount + 1;
+    fs.writeFileSync(VISITOR_COUNT_FILE, JSON.stringify({ count: newCount }), 'utf8');
+    return newCount;
+  } catch (error) {
+    console.error('[Visitor] Error writing visitor count:', error);
+    return getVisitorCount();
+  }
+}
+
+// Visitor tracking endpoint
+app.get('/api/visitors', (req, res) => {
+  const count = incrementVisitorCount();
+  res.json({ count });
+});
+
+// Get visitor count without incrementing (for display)
+app.get('/api/visitors/count', (req, res) => {
+  const count = getVisitorCount();
+  res.json({ count });
+});
 
 // Health check
 app.get('/health', (req, res) => {
