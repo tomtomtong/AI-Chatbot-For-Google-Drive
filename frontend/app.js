@@ -6,6 +6,7 @@ class GoogleDriveUploader {
     this.isAuthenticated = false;
     this.uploadHistory = JSON.parse(localStorage.getItem('uploadHistory') || '[]');
     this.chatHistory = [];
+    this.justLoggedIn = false; // Track if we just completed login
     this.init();
   }
 
@@ -24,14 +25,20 @@ class GoogleDriveUploader {
     const errorParam = params.get('error');
     
     console.log('[Auth] URL params:', { auth: authParam, error: errorParam });
+    console.log('[Auth] Current URL:', window.location.href);
+    console.log('[Auth] Current cookies:', document.cookie || 'no cookies');
+    console.log('[Auth] API_URL:', API_URL || '(empty - using relative URLs)');
     
     if (authParam === 'success') {
       console.log('[Auth] Login successful, checking auth status...');
+      this.justLoggedIn = true; // Mark that we just logged in
       this.showAuthDebug('Login successful! Verifying session...');
       this.hideAuthError();
       window.history.replaceState({}, '', window.location.pathname);
       // Force a fresh auth check after successful login with a small delay to ensure session is saved
-      setTimeout(() => this.checkAuthStatus(), 500);
+      setTimeout(() => {
+        this.checkAuthStatus();
+      }, 1000); // Increased delay to allow cookie propagation
     } else if (errorParam) {
       console.error('[Auth] Login error:', errorParam);
       const decodedError = decodeURIComponent(errorParam);
@@ -54,28 +61,46 @@ class GoogleDriveUploader {
   }
 
   async checkAuthStatus(retryCount = 0) {
-    const maxRetries = 3;
+    const maxRetries = 5; // Increased retries
     try {
-      console.log('[Auth] Checking authentication status...', { API_URL, attempt: retryCount + 1 });
+      const apiEndpoint = API_URL ? `${API_URL}/api/auth/status` : '/api/auth/status';
+      console.log('[Auth] Checking authentication status...', { 
+        API_URL: API_URL || '(empty)', 
+        endpoint: apiEndpoint,
+        attempt: retryCount + 1,
+        justLoggedIn: this.justLoggedIn,
+        cookies: document.cookie || 'no cookies'
+      });
+      
       if (retryCount === 0) {
         this.showAuthDebug('Checking authentication...');
         this.hideAuthError();
       }
       
-      const res = await fetch(`${API_URL}/api/auth/status`, { 
+      const res = await fetch(apiEndpoint, { 
         credentials: 'include',
         cache: 'no-store',
         headers: {
           'Cache-Control': 'no-cache'
         }
       });
+      
       console.log('[Auth] Response status:', res.status, res.statusText);
-      console.log('[Auth] Response headers:', Object.fromEntries(res.headers.entries()));
+      const responseHeaders = Object.fromEntries(res.headers.entries());
+      console.log('[Auth] Response headers:', responseHeaders);
+      
+      // Check for Set-Cookie header
+      const setCookieHeader = res.headers.get('Set-Cookie');
+      if (setCookieHeader) {
+        console.log('[Auth] Set-Cookie header received:', setCookieHeader);
+      } else {
+        console.log('[Auth] No Set-Cookie header in response');
+      }
       
       if (!res.ok) {
         const errorText = await res.text();
         console.error('[Auth] Response error:', errorText);
-        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        throw new Error(`HTTP ${res.status}: ${res.statusText} - ${errorText}`);
       }
       
       const data = await res.json();
@@ -83,35 +108,58 @@ class GoogleDriveUploader {
       this.isAuthenticated = data.authenticated;
       
       if (this.isAuthenticated) {
-        console.log('[Auth] User is authenticated');
+        console.log('[Auth] ✅ User is authenticated!');
+        this.justLoggedIn = false; // Reset flag
         this.hideAuthDebug();
         this.hideAuthError();
       } else {
-        console.log('[Auth] User is NOT authenticated');
+        console.log('[Auth] ❌ User is NOT authenticated');
+        console.log('[Auth] Session info:', {
+          cookies: document.cookie || 'no cookies',
+          justLoggedIn: this.justLoggedIn,
+          retryCount
+        });
+        
         // Retry if we just came from a successful login
-        if (retryCount < maxRetries && window.location.search.includes('auth=success')) {
+        if (retryCount < maxRetries && this.justLoggedIn) {
           console.log('[Auth] Retrying auth check...', retryCount + 1);
-          this.showAuthDebug(`Verifying session... (attempt ${retryCount + 2})`);
-          setTimeout(() => this.checkAuthStatus(retryCount + 1), 1000);
+          this.showAuthDebug(`Verifying session... (attempt ${retryCount + 2}/${maxRetries + 1})`);
+          setTimeout(() => this.checkAuthStatus(retryCount + 1), 1500); // Longer delay
           return;
         }
-        this.showAuthDebug('Not authenticated. Please sign in.');
+        
+        // If we've exhausted retries after login, show error
+        if (this.justLoggedIn && retryCount >= maxRetries) {
+          this.showAuthError('Session verification failed. Please try logging in again.');
+          this.showAuthDebug('Session cookie may not be set. Check browser console for details.');
+          this.justLoggedIn = false;
+        } else {
+          this.showAuthDebug('Not authenticated. Please sign in.');
+        }
       }
       
       this.updateUI();
     } catch (error) {
       console.error('[Auth] Auth check failed:', error);
-      // Retry on network errors
-      if (retryCount < maxRetries && (error.message.includes('Failed to fetch') || error.message.includes('Network'))) {
-        console.log('[Auth] Retrying auth check due to network error...', retryCount + 1);
-        this.showAuthDebug(`Connection issue, retrying... (attempt ${retryCount + 2})`);
-        setTimeout(() => this.checkAuthStatus(retryCount + 1), 1000);
+      console.error('[Auth] Error details:', {
+        message: error.message,
+        stack: error.stack,
+        cookies: document.cookie || 'no cookies'
+      });
+      
+      // Retry on network errors or if we just logged in
+      if (retryCount < maxRetries && (this.justLoggedIn || error.message.includes('Failed to fetch') || error.message.includes('Network'))) {
+        console.log('[Auth] Retrying auth check...', retryCount + 1);
+        this.showAuthDebug(`Connection issue, retrying... (attempt ${retryCount + 2}/${maxRetries + 1})`);
+        setTimeout(() => this.checkAuthStatus(retryCount + 1), 1500);
         return;
       }
+      
       const errorMsg = `Authentication check failed: ${error.message}`;
       this.showAuthError(errorMsg);
-      this.showAuthDebug(`Error: ${error.message}`);
+      this.showAuthDebug(`Error: ${error.message}. Check console for details.`);
       this.isAuthenticated = false;
+      this.justLoggedIn = false;
       this.updateUI();
     }
   }

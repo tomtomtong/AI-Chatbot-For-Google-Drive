@@ -55,18 +55,38 @@ if (FRONTEND_URL && FRONTEND_URL !== '') {
   console.log('[CORS] Same origin mode (production)');
 }
 app.use(express.json());
+
+// Trust proxy for secure cookies in production (Railway, etc.)
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+  console.log('[Session] Trust proxy enabled for production');
+}
+
+// Determine cookie settings based on environment
+const isProduction = process.env.NODE_ENV === 'production';
+const isSecure = isProduction || process.env.FORCE_SECURE_COOKIES === 'true';
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your-secret-key',
   resave: false,
   saveUninitialized: false,
   name: 'sessionId', // Explicit session name
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    secure: isSecure,
+    sameSite: isProduction ? 'none' : 'lax', // 'none' requires secure: true
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    httpOnly: true
+    httpOnly: true,
+    // Don't set domain - let browser handle it based on request
   }
 }));
+
+console.log('[Session] Configuration:', {
+  secure: isSecure,
+  sameSite: isProduction ? 'none' : 'lax',
+  name: 'sessionId',
+  production: isProduction,
+  trustProxy: isProduction
+});
 
 // Log session middleware
 app.use((req, res, next) => {
@@ -107,6 +127,32 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// Cookie test endpoint for debugging
+app.get('/api/test-cookies', (req, res) => {
+  const cookieHeader = req.headers.cookie || 'none';
+  const sessionCookie = cookieHeader.includes('sessionId=') 
+    ? cookieHeader.split('sessionId=')[1]?.split(';')[0]
+    : 'not found';
+  
+  res.json({
+    cookiesReceived: cookieHeader,
+    sessionCookie: sessionCookie !== 'not found' ? sessionCookie.substring(0, 30) + '...' : 'not found',
+    sessionId: req.sessionID,
+    hasSession: !!req.session,
+    hasTokens: !!req.session?.tokens,
+    origin: req.headers.origin,
+    referer: req.headers.referer,
+    host: req.headers.host,
+    protocol: req.headers['x-forwarded-proto'] || (req.secure ? 'https' : 'http'),
+    cookieConfig: {
+      secure: req.session?.cookie?.secure,
+      sameSite: req.session?.cookie?.sameSite,
+      httpOnly: req.session?.cookie?.httpOnly,
+      maxAge: req.session?.cookie?.maxAge
+    }
+  });
+});
+
 // Start OAuth flow
 app.get('/auth/google', (req, res) => {
   const redirectUri = getRedirectUri(req);
@@ -132,7 +178,10 @@ app.get('/oauth/callback', async (req, res) => {
     hasCode: !!code, 
     codeLength: code?.length,
     sessionId: req.sessionID,
-    cookies: req.headers.cookie ? 'present' : 'missing'
+    cookies: req.headers.cookie ? 'present' : 'missing',
+    cookieHeader: req.headers.cookie || 'none',
+    origin: req.headers.origin,
+    referer: req.headers.referer
   });
   
   if (!code) {
@@ -152,22 +201,50 @@ app.get('/oauth/callback', async (req, res) => {
     
     // Save session
     req.session.tokens = tokens;
+    console.log('[OAuth Callback] Tokens stored in session');
     
-    // Save session explicitly
-    req.session.save((err) => {
-      if (err) {
-        console.error('[OAuth Callback] Session save error:', err);
-      } else {
-        console.log('[OAuth Callback] Session saved successfully:', {
-          sessionId: req.sessionID,
-          hasTokens: !!req.session.tokens
-        });
-      }
-      
-      const redirectUrl = FRONTEND_URL || '/';
-      console.log('[OAuth Callback] Redirecting to:', redirectUrl);
-      res.redirect(`${redirectUrl}?auth=success`);
+    // Save session explicitly and wait for completion
+    await new Promise((resolve, reject) => {
+      req.session.save((err) => {
+        if (err) {
+          console.error('[OAuth Callback] Session save error:', err);
+          reject(err);
+        } else {
+          console.log('[OAuth Callback] Session saved successfully:', {
+            sessionId: req.sessionID,
+            hasTokens: !!req.session.tokens,
+            cookieOptions: {
+              secure: req.session.cookie.secure,
+              sameSite: req.session.cookie.sameSite,
+              httpOnly: req.session.cookie.httpOnly
+            }
+          });
+          resolve();
+        }
+      });
     });
+    
+    // Verify session was saved before redirecting
+    const verifySession = await new Promise((resolve) => {
+      req.session.reload((err) => {
+        if (err) {
+          console.error('[OAuth Callback] Session reload error:', err);
+          resolve(false);
+        } else {
+          const hasTokens = !!req.session.tokens;
+          console.log('[OAuth Callback] Session verification:', { hasTokens, sessionId: req.sessionID });
+          resolve(hasTokens);
+        }
+      });
+    });
+    
+    if (!verifySession) {
+      console.error('[OAuth Callback] Session verification failed - tokens not found after save');
+    }
+    
+    const redirectUrl = FRONTEND_URL || '/';
+    console.log('[OAuth Callback] Redirecting to:', redirectUrl);
+    res.redirect(`${redirectUrl}?auth=success`);
   } catch (error) {
     console.error('[OAuth Callback] Error:', error.message, error.stack);
     const redirectUrl = FRONTEND_URL || '/';
@@ -178,12 +255,34 @@ app.get('/oauth/callback', async (req, res) => {
 // Check auth status
 app.get('/api/auth/status', (req, res) => {
   const hasTokens = !!req.session.tokens;
+  const cookieHeader = req.headers.cookie || 'none';
+  const sessionCookie = cookieHeader.includes('sessionId=') 
+    ? cookieHeader.split('sessionId=')[1]?.split(';')[0]?.substring(0, 20) + '...'
+    : 'not found';
+  
   console.log('[Auth Status] Request received:', {
     hasSession: !!req.session,
     hasTokens,
     sessionId: req.sessionID,
-    cookies: req.headers.cookie ? 'present' : 'missing'
+    cookies: cookieHeader !== 'none' ? 'present' : 'missing',
+    sessionCookie: sessionCookie,
+    sessionKeys: req.session ? Object.keys(req.session) : [],
+    origin: req.headers.origin,
+    referer: req.headers.referer,
+    userAgent: req.headers['user-agent']?.substring(0, 50)
   });
+  
+  // Log session cookie details
+  if (cookieHeader !== 'none') {
+    const cookies = cookieHeader.split(';').map(c => c.trim());
+    const sessionCookieFull = cookies.find(c => c.startsWith('sessionId='));
+    if (sessionCookieFull) {
+      console.log('[Auth Status] Session cookie found:', sessionCookieFull.substring(0, 50) + '...');
+    } else {
+      console.log('[Auth Status] No sessionId cookie found in:', cookies);
+    }
+  }
+  
   res.json({ authenticated: hasTokens });
 });
 
