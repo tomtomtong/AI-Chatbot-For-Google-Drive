@@ -40,24 +40,45 @@ const OPENROUTER_MODEL = 'x-ai/grok-4-fast';
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 // Middleware
-// Only use CORS in development when frontend is on different port
+// CORS configuration
 if (FRONTEND_URL && FRONTEND_URL !== '') {
+  // Development: frontend on different port
   app.use(cors({
     origin: FRONTEND_URL,
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
   }));
+  console.log('[CORS] Enabled for:', FRONTEND_URL);
+} else {
+  // Production: same origin, no CORS needed
+  console.log('[CORS] Same origin mode (production)');
 }
 app.use(express.json());
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your-secret-key',
   resave: false,
   saveUninitialized: false,
+  name: 'sessionId', // Explicit session name
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    httpOnly: true
   }
 }));
+
+// Log session middleware
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/auth') || req.path.startsWith('/oauth') || req.path.startsWith('/auth')) {
+    console.log('[Session]', req.method, req.path, {
+      sessionId: req.sessionID,
+      hasSession: !!req.session,
+      hasTokens: !!req.session?.tokens
+    });
+  }
+  next();
+});
 
 // Serve static files from frontend dist folder in production
 if (process.env.NODE_ENV === 'production') {
@@ -89,6 +110,7 @@ app.get('/health', (req, res) => {
 // Start OAuth flow
 app.get('/auth/google', (req, res) => {
   const redirectUri = getRedirectUri(req);
+  console.log('[Auth] Starting OAuth flow:', { redirectUri, sessionId: req.sessionID });
   const oauth2Client = createOAuth2Client(redirectUri);
   const scopes = [
     'https://www.googleapis.com/auth/drive.file',
@@ -99,33 +121,70 @@ app.get('/auth/google', (req, res) => {
     access_type: 'offline',
     scope: scopes,
   });
+  console.log('[Auth] Redirecting to Google:', authUrl);
   res.redirect(authUrl);
 });
 
 // OAuth callback
 app.get('/oauth/callback', async (req, res) => {
   const { code } = req.query;
+  console.log('[OAuth Callback] Received callback:', { 
+    hasCode: !!code, 
+    codeLength: code?.length,
+    sessionId: req.sessionID,
+    cookies: req.headers.cookie ? 'present' : 'missing'
+  });
+  
   if (!code) {
+    console.error('[OAuth Callback] No code provided');
     const redirectUrl = FRONTEND_URL || '/';
     return res.redirect(`${redirectUrl}?error=no_code`);
   }
   try {
     const redirectUri = getRedirectUri(req);
+    console.log('[OAuth Callback] Using redirect URI:', redirectUri);
     const oauth2Client = createOAuth2Client(redirectUri);
     const { tokens } = await oauth2Client.getToken(code);
+    console.log('[OAuth Callback] Tokens received:', { 
+      hasAccessToken: !!tokens.access_token,
+      hasRefreshToken: !!tokens.refresh_token 
+    });
+    
+    // Save session
     req.session.tokens = tokens;
-    const redirectUrl = FRONTEND_URL || '/';
-    res.redirect(`${redirectUrl}?auth=success`);
+    
+    // Save session explicitly
+    req.session.save((err) => {
+      if (err) {
+        console.error('[OAuth Callback] Session save error:', err);
+      } else {
+        console.log('[OAuth Callback] Session saved successfully:', {
+          sessionId: req.sessionID,
+          hasTokens: !!req.session.tokens
+        });
+      }
+      
+      const redirectUrl = FRONTEND_URL || '/';
+      console.log('[OAuth Callback] Redirecting to:', redirectUrl);
+      res.redirect(`${redirectUrl}?auth=success`);
+    });
   } catch (error) {
-    console.error('OAuth error:', error);
+    console.error('[OAuth Callback] Error:', error.message, error.stack);
     const redirectUrl = FRONTEND_URL || '/';
-    res.redirect(`${redirectUrl}?error=auth_failed`);
+    res.redirect(`${redirectUrl}?error=${encodeURIComponent(error.message || 'auth_failed')}`);
   }
 });
 
 // Check auth status
 app.get('/api/auth/status', (req, res) => {
-  res.json({ authenticated: !!req.session.tokens });
+  const hasTokens = !!req.session.tokens;
+  console.log('[Auth Status] Request received:', {
+    hasSession: !!req.session,
+    hasTokens,
+    sessionId: req.sessionID,
+    cookies: req.headers.cookie ? 'present' : 'missing'
+  });
+  res.json({ authenticated: hasTokens });
 });
 
 // Logout

@@ -10,18 +10,33 @@ class GoogleDriveUploader {
   }
 
   async init() {
+    console.log('[App] Initializing...');
     this.checkUrlParams();
     this.bindEvents();
     await this.checkAuthStatus();
     this.renderUploadHistory();
+    console.log('[App] Initialization complete');
   }
 
   checkUrlParams() {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('auth') === 'success') {
+    const authParam = params.get('auth');
+    const errorParam = params.get('error');
+    
+    console.log('[Auth] URL params:', { auth: authParam, error: errorParam });
+    
+    if (authParam === 'success') {
+      console.log('[Auth] Login successful, checking auth status...');
+      this.showAuthDebug('Login successful! Verifying session...');
+      this.hideAuthError();
       window.history.replaceState({}, '', window.location.pathname);
-    } else if (params.get('error')) {
-      this.showStatus(`Authentication failed: ${params.get('error')}`, 'error');
+      // Force a fresh auth check after successful login with a small delay to ensure session is saved
+      setTimeout(() => this.checkAuthStatus(), 500);
+    } else if (errorParam) {
+      console.error('[Auth] Login error:', errorParam);
+      const decodedError = decodeURIComponent(errorParam);
+      this.showAuthError(`Authentication failed: ${decodedError}`);
+      this.showAuthDebug(`Error: ${decodedError}`);
       window.history.replaceState({}, '', window.location.pathname);
     }
   }
@@ -38,14 +53,96 @@ class GoogleDriveUploader {
     });
   }
 
-  async checkAuthStatus() {
+  async checkAuthStatus(retryCount = 0) {
+    const maxRetries = 3;
     try {
-      const res = await fetch(`${API_URL}/api/auth/status`, { credentials: 'include' });
+      console.log('[Auth] Checking authentication status...', { API_URL, attempt: retryCount + 1 });
+      if (retryCount === 0) {
+        this.showAuthDebug('Checking authentication...');
+        this.hideAuthError();
+      }
+      
+      const res = await fetch(`${API_URL}/api/auth/status`, { 
+        credentials: 'include',
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      });
+      console.log('[Auth] Response status:', res.status, res.statusText);
+      console.log('[Auth] Response headers:', Object.fromEntries(res.headers.entries()));
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('[Auth] Response error:', errorText);
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      }
+      
       const data = await res.json();
+      console.log('[Auth] Auth status response:', data);
       this.isAuthenticated = data.authenticated;
+      
+      if (this.isAuthenticated) {
+        console.log('[Auth] User is authenticated');
+        this.hideAuthDebug();
+        this.hideAuthError();
+      } else {
+        console.log('[Auth] User is NOT authenticated');
+        // Retry if we just came from a successful login
+        if (retryCount < maxRetries && window.location.search.includes('auth=success')) {
+          console.log('[Auth] Retrying auth check...', retryCount + 1);
+          this.showAuthDebug(`Verifying session... (attempt ${retryCount + 2})`);
+          setTimeout(() => this.checkAuthStatus(retryCount + 1), 1000);
+          return;
+        }
+        this.showAuthDebug('Not authenticated. Please sign in.');
+      }
+      
       this.updateUI();
     } catch (error) {
-      console.error('Auth check failed:', error);
+      console.error('[Auth] Auth check failed:', error);
+      // Retry on network errors
+      if (retryCount < maxRetries && (error.message.includes('Failed to fetch') || error.message.includes('Network'))) {
+        console.log('[Auth] Retrying auth check due to network error...', retryCount + 1);
+        this.showAuthDebug(`Connection issue, retrying... (attempt ${retryCount + 2})`);
+        setTimeout(() => this.checkAuthStatus(retryCount + 1), 1000);
+        return;
+      }
+      const errorMsg = `Authentication check failed: ${error.message}`;
+      this.showAuthError(errorMsg);
+      this.showAuthDebug(`Error: ${error.message}`);
+      this.isAuthenticated = false;
+      this.updateUI();
+    }
+  }
+
+  showAuthError(message) {
+    const el = document.getElementById('auth-error');
+    if (el) {
+      el.textContent = message;
+      el.style.display = 'block';
+    }
+  }
+
+  hideAuthError() {
+    const el = document.getElementById('auth-error');
+    if (el) {
+      el.style.display = 'none';
+    }
+  }
+
+  showAuthDebug(message) {
+    const el = document.getElementById('auth-debug');
+    if (el) {
+      el.textContent = `Debug: ${message}`;
+      el.style.display = 'block';
+    }
+  }
+
+  hideAuthDebug() {
+    const el = document.getElementById('auth-debug');
+    if (el) {
+      el.style.display = 'none';
     }
   }
 
@@ -73,6 +170,7 @@ class GoogleDriveUploader {
   }
 
   handleLogin() {
+    console.log('[Auth] Initiating login, redirecting to:', `${API_URL}/auth/google`);
     window.location.href = `${API_URL}/auth/google`;
   }
 
