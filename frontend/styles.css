@@ -191,6 +191,57 @@ body::before {
     margin: 0;
 }
 
+.github-link {
+    color: #4285f4;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.github-link:hover {
+    color: #3367d6;
+    text-decoration: underline;
+}
+
+/* Open Source Badge */
+.open-source-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+    border: 2px solid #667eea;
+    border-radius: 50px;
+    font-weight: 600;
+    color: #202124;
+    margin: 20px 0;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+    transition: all 0.3s ease;
+}
+
+.open-source-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.25);
+    border-color: #764ba2;
+}
+
+.badge-icon {
+    font-size: 1.2rem;
+}
+
+.github-link-badge {
+    color: #4285f4;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+    margin-left: 4px;
+}
+
+.github-link-badge:hover {
+    color: #3367d6;
+    text-decoration: underline;
+}
+
 /* CTA Section */
 .cta-section {
     margin-top: 20px;
@@ -227,6 +278,11 @@ body::before {
     font-style: italic;
 }
 
+.cta-note .github-link {
+    color: #4285f4;
+    font-weight: 600;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .hero-title {
@@ -249,6 +305,17 @@ body::before {
     .btn-large {
         padding: 16px 32px;
         font-size: 1rem;
+    }
+    
+    .open-source-badge {
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px 20px;
+        text-align: center;
+    }
+    
+    .github-link-badge {
+        margin-left: 0;
     }
 }
 

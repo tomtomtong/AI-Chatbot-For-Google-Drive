@@ -1,6 +1,32 @@
+# Open Source Google Drive Organizer
+
+🚀 **An open source project for AI-powered Google Drive file organization**
+
+**Try it now** or **host it yourself** - completely free and open source!
+
+This project provides a web-based Google Drive organizer with AI-powered file management. You can use the hosted version to test it, or deploy it yourself on Railway, Vercel, or your own server.
+
+## 🌟 Features
+
+- **AI-Powered Organization**: Automatically organize files based on descriptions
+- **Easy Upload**: Simple file upload with smart folder suggestions
+- **100% Open Source**: Full source code available on GitHub
+- **Self-Hostable**: Deploy on any platform you prefer
+- **Privacy-First**: Host it yourself for complete data control
+
+## 🚀 Quick Start
+
+### Try It Now
+Just visit the hosted version and connect your Google Drive to test all features instantly!
+
+### Host It Yourself
+Follow the deployment guide below to set up your own instance.
+
+---
+
 # Railway Deployment Guide
 
-This folder contains the web-based version of the Google Drive Uploader for deployment to Railway.
+This guide explains how to deploy the Google Drive Organizer to Railway.
 
 ## Architecture
 
