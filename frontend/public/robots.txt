@@ -1,0 +1,28 @@
+# Robots.txt for Open Source Google Drive Organizer
+# https://onlinechatforgoogledrive.up.railway.app/
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://onlinechatforgoogledrive.up.railway.app/sitemap.xml
+
+# LLM-friendly content
+# llms.txt: https://onlinechatforgoogledrive.up.railway.app/llms.txt
+# llms-full.txt: https://onlinechatforgoogledrive.up.railway.app/llms-full.txt
+
+# Disallow API and auth routes from indexing
+Disallow: /api/
+Disallow: /auth/
+Disallow: /oauth/
+
+# Allow static assets
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.svg
+Allow: /*.ico
+
+# Crawl delay for politeness (optional)
+Crawl-delay: 1
+

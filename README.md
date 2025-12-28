@@ -14,6 +14,37 @@ This project provides a web-based Google Drive organizer with AI-powered file ma
 - **Self-Hostable**: Deploy on any platform you prefer
 - **Privacy-First**: Host it yourself for complete data control
 
+## 🔍 SEO & LLM Search Optimizations
+
+This project includes comprehensive optimizations for search engines and AI/LLM-powered search:
+
+### Traditional SEO
+- **Meta Tags**: Complete Open Graph and Twitter Card support
+- **Structured Data**: JSON-LD schemas for WebApplication, SoftwareSourceCode, FAQPage
+- **Semantic HTML**: Proper heading hierarchy, ARIA landmarks, and accessibility attributes
+- **Sitemap**: XML sitemap for search engine crawlers
+- **Robots.txt**: Proper directives for crawlers
+
+### LLM Search Optimization
+- **llms.txt**: Comprehensive project description for LLM understanding ([/llms.txt](/llms.txt))
+- **llms-full.txt**: Detailed documentation for AI search engines ([/llms-full.txt](/llms-full.txt))
+- **ai-plugin.json**: AI plugin manifest for ChatGPT-style integrations
+- **OpenAPI Spec**: Complete API documentation in OpenAPI 3.0 format
+
+### Files Included
+```
+frontend/public/
+├── llms.txt              # Brief LLM-friendly description
+├── llms-full.txt         # Complete documentation for LLMs
+├── sitemap.xml           # XML sitemap
+├── robots.txt            # Crawler directives
+├── openapi.yaml          # OpenAPI specification
+├── favicon.svg           # Vector favicon
+├── og-image.svg          # Open Graph image
+└── .well-known/
+    └── ai-plugin.json    # AI plugin manifest
+```
+
 ## 🚀 Quick Start
 
 ### Try It Now

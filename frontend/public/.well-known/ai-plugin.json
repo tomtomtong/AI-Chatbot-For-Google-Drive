@@ -1,0 +1,23 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Open Source Google Drive Organizer",
+  "name_for_model": "google_drive_organizer",
+  "description_for_human": "Organize your Google Drive files automatically using AI. Upload files with natural language descriptions and let AI find the perfect folder.",
+  "description_for_model": "A free, open-source web application that uses AI to automatically organize files in Google Drive. When users upload a file with a natural language description, the AI analyzes the description, filename, and existing folder structure to place the file in the most appropriate location. Features include: AI-powered file organization, smart folder suggestions, Google Drive OAuth integration, folder structure visualization, and self-hosting capability. The tool is completely free and can be self-hosted on Railway, Vercel, or any Node.js platform.",
+  "auth": {
+    "type": "oauth",
+    "client_url": "https://accounts.google.com/o/oauth2/auth",
+    "authorization_url": "https://oauth2.googleapis.com/token",
+    "scope": "https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly",
+    "authorization_content_type": "application/x-www-form-urlencoded"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://onlinechatforgoogledrive.up.railway.app/openapi.yaml",
+    "is_user_authenticated": true
+  },
+  "logo_url": "https://onlinechatforgoogledrive.up.railway.app/favicon.svg",
+  "contact_email": "tomtomtongtong@gmail.com",
+  "legal_info_url": "https://github.com/tomtomtong/onlineChatForGoogleDrive"
+}
+

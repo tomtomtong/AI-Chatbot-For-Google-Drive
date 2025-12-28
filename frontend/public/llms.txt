@@ -1,0 +1,79 @@
+# Open Source Google Drive Organizer
+
+> An open source AI-powered tool that automatically organizes your Google Drive files. Try it free or host it yourself.
+
+## What This App Does
+
+Open Source Google Drive Organizer is a free, web-based productivity tool that helps users organize files in Google Drive using artificial intelligence. When you upload a file with a natural language description, the AI analyzes your description, filename, and existing folder structure to automatically place the file in the most appropriate location.
+
+## Key Features
+
+- **AI-Powered File Organization**: Automatically suggests and creates the best folder location for uploaded files based on natural language descriptions
+- **Google Drive Integration**: Securely connects to your Google Drive via OAuth 2.0 authentication
+- **Smart Folder Suggestions**: AI examines your existing folder structure to find the perfect place for each file
+- **Easy File Upload**: Simple drag-and-drop or click-to-upload interface with optional description field
+- **Folder Structure Viewer**: Visual tree view of your entire Google Drive folder hierarchy
+- **100% Open Source**: Full source code available on GitHub for transparency and self-hosting
+- **Self-Hostable**: Deploy on Railway, Vercel, or any Node.js hosting platform for complete data control
+
+## Technical Stack
+
+- Frontend: Vanilla JavaScript, HTML5, CSS3, Vite
+- Backend: Node.js, Express.js
+- Authentication: Google OAuth 2.0
+- AI: OpenRouter API integration
+- Hosting: Railway (default), supports any Node.js platform
+
+## Use Cases
+
+1. **Personal File Organization**: Keep your personal Google Drive tidy without manual folder management
+2. **Work Document Management**: Automatically organize work files into appropriate project folders
+3. **Photo Organization**: Sort vacation photos, screenshots, and images into logical albums
+4. **Research Materials**: Organize academic papers, notes, and resources by topic or project
+5. **Small Team Collaboration**: Shared Drive organization for small teams
+
+## Getting Started
+
+1. Visit the hosted version at the main URL
+2. Click "Connect Google Drive" to authenticate securely with Google
+3. Select a file to upload and optionally describe where it should go
+4. The AI will automatically organize the file into the best folder
+
+## Self-Hosting
+
+For complete data control, you can host your own instance:
+
+1. Clone the repository from GitHub
+2. Set up environment variables (Google OAuth credentials, OpenRouter API key)
+3. Deploy to Railway, Vercel, or any Node.js hosting platform
+4. Configure your own Google Cloud OAuth credentials
+
+## API Endpoints
+
+- `GET /api/auth/status` - Check authentication status
+- `POST /api/upload` - Upload file with optional organization hint
+- `GET /api/folders` - Get folder structure
+- `POST /api/folders` - Create new folder
+- `GET /api/files/search` - Search files
+- `GET /api/files/latest` - Get most recently modified file
+- `POST /api/chat` - AI chat interface
+
+## Privacy & Security
+
+- Uses Google's official OAuth 2.0 for secure authentication
+- Only requests minimum necessary Drive permissions
+- No file content is stored on our servers
+- Session-based authentication with secure cookies
+- Open source code for full transparency
+
+## Contact
+
+- Email: tomtomtongtong@gmail.com
+- GitHub: https://github.com/tomtomtong/onlineChatForGoogleDrive
+
+## Optional Links
+
+- Documentation: https://github.com/tomtomtong/onlineChatForGoogleDrive#readme
+- Source Code: https://github.com/tomtomtong/onlineChatForGoogleDrive
+- Report Issues: https://github.com/tomtomtong/onlineChatForGoogleDrive/issues
+

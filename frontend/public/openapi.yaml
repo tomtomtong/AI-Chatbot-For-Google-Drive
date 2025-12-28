@@ -1,0 +1,193 @@
+openapi: 3.0.3
+info:
+  title: Open Source Google Drive Organizer API
+  description: |
+    API for the Open Source Google Drive Organizer - an AI-powered tool that automatically organizes files in Google Drive.
+    
+    ## Features
+    - Upload files with natural language descriptions
+    - AI-powered folder suggestions
+    - Folder structure visualization
+    - File search and management
+    
+    ## Authentication
+    This API uses Google OAuth 2.0 for authentication. Users must first authenticate via the `/auth/google` endpoint.
+  version: 1.0.0
+  contact:
+    email: tomtomtongtong@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://onlinechatforgoogledrive.up.railway.app
+    description: Production server
+
+paths:
+  /api/auth/status:
+    get:
+      summary: Check authentication status
+      description: Returns whether the current user is authenticated with Google Drive
+      operationId: getAuthStatus
+      responses:
+        '200':
+          description: Authentication status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  authenticated:
+                    type: boolean
+                    description: Whether the user is authenticated
+
+  /api/upload:
+    post:
+      summary: Upload and organize a file
+      description: Upload a file to Google Drive with an optional hint for AI-powered organization
+      operationId: uploadFile
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The file to upload
+                hint:
+                  type: string
+                  description: Optional natural language hint for file organization (e.g., "work documents", "vacation photos")
+              required:
+                - file
+      responses:
+        '200':
+          description: File uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  file:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      webViewLink:
+                        type: string
+                  moved:
+                    type: boolean
+                    description: Whether the file was moved to a suggested folder
+                  message:
+                    type: string
+
+  /api/folders:
+    get:
+      summary: Get folder structure
+      description: Returns the complete folder structure of the user's Google Drive
+      operationId: getFolders
+      responses:
+        '200':
+          description: Folder structure retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  structure:
+                    type: object
+                    description: Hierarchical folder structure
+    post:
+      summary: Create a new folder
+      description: Creates a new folder in Google Drive
+      operationId: createFolder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the new folder
+                parentId:
+                  type: string
+                  description: ID of the parent folder (optional, defaults to root)
+              required:
+                - name
+      responses:
+        '200':
+          description: Folder created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  folder:
+                    type: object
+                  message:
+                    type: string
+
+  /api/files/search:
+    get:
+      summary: Search files
+      description: Search for files in Google Drive by name
+      operationId: searchFiles
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        mimeType:
+                          type: string
+
+  /api/files/latest:
+    get:
+      summary: Get latest file
+      description: Returns the most recently modified file
+      operationId: getLatestFile
+      responses:
+        '200':
+          description: Latest file information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  file:
+                    type: object
+

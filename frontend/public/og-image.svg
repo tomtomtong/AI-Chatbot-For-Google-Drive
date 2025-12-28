@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#f8f9ff;stop-opacity:0.95" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="100" cy="100" r="200" fill="white" opacity="0.05"/>
+  <circle cx="1100" cy="530" r="250" fill="white" opacity="0.05"/>
+  
+  <!-- Main card -->
+  <rect x="60" y="80" width="1080" height="470" rx="24" fill="url(#cardGrad)"/>
+  
+  <!-- Icon -->
+  <g transform="translate(120, 150)">
+    <circle cx="60" cy="60" r="60" fill="#667eea" opacity="0.1"/>
+    <text x="60" y="85" text-anchor="middle" font-size="70">🚀</text>
+  </g>
+  
+  <!-- Title -->
+  <text x="260" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="700" fill="#202124">
+    Open Source
+  </text>
+  <text x="260" y="270" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="700" fill="#667eea">
+    Google Drive Organizer
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="260" y="340" font-family="system-ui, -apple-system, sans-serif" font-size="28" fill="#5f6368">
+    AI-Powered File Organization • Free &amp; Self-Hostable
+  </text>
+  
+  <!-- Features -->
+  <g transform="translate(120, 400)">
+    <rect x="0" y="0" width="220" height="100" rx="12" fill="#667eea" opacity="0.1"/>
+    <text x="110" y="40" text-anchor="middle" font-size="30">🧠</text>
+    <text x="110" y="75" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#202124">AI Organization</text>
+  </g>
+  
+  <g transform="translate(370, 400)">
+    <rect x="0" y="0" width="220" height="100" rx="12" fill="#667eea" opacity="0.1"/>
+    <text x="110" y="40" text-anchor="middle" font-size="30">📤</text>
+    <text x="110" y="75" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#202124">Easy Upload</text>
+  </g>
+  
+  <g transform="translate(620, 400)">
+    <rect x="0" y="0" width="220" height="100" rx="12" fill="#667eea" opacity="0.1"/>
+    <text x="110" y="40" text-anchor="middle" font-size="30">⭐</text>
+    <text x="110" y="75" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#202124">Open Source</text>
+  </g>
+  
+  <g transform="translate(870, 400)">
+    <rect x="0" y="0" width="220" height="100" rx="12" fill="#667eea" opacity="0.1"/>
+    <text x="110" y="40" text-anchor="middle" font-size="30">🏠</text>
+    <text x="110" y="75" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#202124">Self-Hostable</text>
+  </g>
+  
+  <!-- Footer -->
+  <text x="600" y="600" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="white" opacity="0.9">
+    github.com/tomtomtong/onlineChatForGoogleDrive
+  </text>
+</svg>
+

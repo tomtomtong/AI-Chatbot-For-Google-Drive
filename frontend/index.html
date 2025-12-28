@@ -1,132 +1,351 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: https://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Source Google Drive Organizer - Try It or Host It Yourself</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Open Source Google Drive Organizer - AI-Powered File Organization | Free & Self-Hostable</title>
+    <meta name="title" content="Open Source Google Drive Organizer - AI-Powered File Organization">
+    <meta name="description" content="Automatically organize your Google Drive files with AI. Smart folder suggestions, easy uploads, and natural language file management. 100% open source - try it free or host it yourself.">
+    <meta name="keywords" content="Google Drive organizer, AI file organization, open source, file management, cloud storage, productivity tool, self-hosted, Google Drive automation, smart folders">
+    <meta name="author" content="tomtomtong">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://onlinechatforgoogledrive.up.railway.app/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://onlinechatforgoogledrive.up.railway.app/">
+    <meta property="og:title" content="Open Source Google Drive Organizer - AI-Powered File Organization">
+    <meta property="og:description" content="Automatically organize your Google Drive files with AI. Smart folder suggestions, easy uploads, and natural language file management. 100% open source - try it free or host it yourself.">
+    <meta property="og:image" content="https://onlinechatforgoogledrive.up.railway.app/og-image.svg">
+    <meta property="og:image:type" content="image/svg+xml">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Open Source Drive Organizer">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://onlinechatforgoogledrive.up.railway.app/">
+    <meta name="twitter:title" content="Open Source Google Drive Organizer - AI-Powered File Organization">
+    <meta name="twitter:description" content="Automatically organize your Google Drive files with AI. Smart folder suggestions, easy uploads, and natural language file management. 100% open source.">
+    <meta name="twitter:image" content="https://onlinechatforgoogledrive.up.railway.app/og-image.svg">
+    
+    <!-- Additional SEO -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="application-name" content="Open Source Drive Organizer">
+    <meta name="apple-mobile-web-app-title" content="Drive Organizer">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://accounts.google.com">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Structured Data - Organization -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Open Source Google Drive Organizer",
+        "alternateName": "Drive Organizer",
+        "description": "An open source AI-powered tool that automatically organizes your Google Drive files. Smart folder suggestions, easy uploads, and natural language file management.",
+        "url": "https://onlinechatforgoogledrive.up.railway.app/",
+        "applicationCategory": "ProductivityApplication",
+        "operatingSystem": "Web",
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
+        "softwareVersion": "1.0",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "AI-powered file organization",
+            "Smart folder suggestions",
+            "Google Drive integration",
+            "Natural language commands",
+            "Self-hostable",
+            "Open source"
+        ],
+        "screenshot": "https://onlinechatforgoogledrive.up.railway.app/og-image.svg",
+        "author": {
+            "@type": "Person",
+            "name": "tomtomtong",
+            "email": "tomtomtongtong@gmail.com"
+        },
+        "sourceOrganization": {
+            "@type": "Organization",
+            "name": "Open Source Project",
+            "url": "https://github.com/tomtomtong/onlineChatForGoogleDrive"
+        },
+        "isAccessibleForFree": true,
+        "license": "https://opensource.org/licenses/MIT"
+    }
+    </script>
+    
+    <!-- Structured Data - SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "Open Source Google Drive Organizer",
+        "codeRepository": "https://github.com/tomtomtong/onlineChatForGoogleDrive",
+        "programmingLanguage": ["JavaScript", "HTML", "CSS"],
+        "runtimePlatform": "Node.js",
+        "description": "An open source project for AI-powered Google Drive file organization. Try it now or host it yourself - completely free and open source."
+    }
+    </script>
+    
+    <!-- Structured Data - FAQ for LLM understanding -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is Open Source Google Drive Organizer?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "It's a free, open-source web application that uses AI to automatically organize files in your Google Drive. Simply upload a file with a description, and the AI suggests the best folder location based on your existing folder structure."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is this tool free to use?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, the tool is completely free and open source. You can either use the hosted version directly or deploy your own instance on Railway, Vercel, or any other hosting platform."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How does the AI file organization work?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "When you upload a file, you provide a brief description. The AI analyzes your description, filename, and file type, then examines your Google Drive folder structure to suggest the most appropriate location for the file."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is my data safe with this tool?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, the tool uses Google's official OAuth authentication and only requests the minimum permissions needed. Since it's open source, you can review the code yourself or self-host it for complete data control."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I host this tool myself?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Absolutely! The project is designed to be easily self-hosted. You can deploy it on Railway, Vercel, or any Node.js hosting platform. Full deployment instructions are available on the GitHub repository."
+                }
+            }
+        ]
+    }
+    </script>
+    
+    <!-- Structured Data - BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://onlinechatforgoogledrive.up.railway.app/"
+            }
+        ]
+    }
+    </script>
+    
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <header class="main-header">
+    <div class="container" role="main">
+        <header class="main-header" role="banner">
             <h1>Open Source Drive Organizer</h1>
+            <p class="sr-only">AI-powered Google Drive file organization tool - free and open source</p>
         </header>
 
-        <main>
-            <div id="auth-section" class="section">
-                <div id="login-view" class="hero-section">
+        <main id="main-content">
+            <!-- Hero/Auth Section -->
+            <section id="auth-section" class="section" aria-labelledby="hero-title">
+                <article id="login-view" class="hero-section" itemscope itemtype="https://schema.org/WebApplication">
                     <div class="hero-content">
-                        <div class="hero-icon">🚀</div>
-                        <h1 class="hero-title">Open Source Google Drive Organizer</h1>
-                        <p class="hero-subtitle">An open source project for AI-powered file organization. <strong>Try it now</strong> or <strong>host it yourself</strong> - it's completely free and open!</p>
+                        <div class="hero-icon" aria-hidden="true">🚀</div>
+                        <h1 id="hero-title" class="hero-title" itemprop="name">Open Source Google Drive Organizer</h1>
+                        <p class="hero-subtitle" itemprop="description">An open source project for AI-powered file organization. <strong>Try it now</strong> or <strong>host it yourself</strong> - it's completely free and open!</p>
                         
-                        <div class="open-source-badge">
-                            <span class="badge-icon">⭐</span>
+                        <div class="open-source-badge" role="complementary">
+                            <span class="badge-icon" aria-hidden="true">⭐</span>
                             <span>100% Open Source</span>
-                            <a href="https://github.com/tomtomtong/onlineChatForGoogleDrive" target="_blank" rel="noopener noreferrer" class="github-link-badge">
+                            <a href="https://github.com/tomtomtong/onlineChatForGoogleDrive" target="_blank" rel="noopener noreferrer" class="github-link-badge" itemprop="codeRepository">
                                 View on GitHub →
                             </a>
                         </div>
                         
-                        <div class="features-grid">
-                            <div class="feature-card">
-                                <div class="feature-icon">📤</div>
-                                <h3>Easy Upload</h3>
-                                <p>Just select your file and describe where it should go</p>
-                            </div>
-                            <div class="feature-card">
-                                <div class="feature-icon">🧠</div>
-                                <h3>AI Organization</h3>
-                                <p>Smart AI analyzes your description and file type to find the perfect folder</p>
-                            </div>
-                            <div class="feature-card">
-                                <div class="feature-icon">⚡</div>
-                                <h3>Save Time</h3>
-                                <p>No more manually creating folders or searching for the right place</p>
-                            </div>
-                            <div class="feature-card">
-                                <div class="feature-icon">💬</div>
-                                <h3>Chat Coming Soon</h3>
-                                <p>Chat with your Google Drive coming soon</p>
-                            </div>
-                        </div>
+                        <!-- Features Section with semantic markup -->
+                        <section class="features-grid" aria-label="Key Features">
+                            <article class="feature-card" itemscope itemtype="https://schema.org/Thing">
+                                <div class="feature-icon" aria-hidden="true">📤</div>
+                                <h3 itemprop="name">Easy Upload</h3>
+                                <p itemprop="description">Just select your file and describe where it should go</p>
+                            </article>
+                            <article class="feature-card" itemscope itemtype="https://schema.org/Thing">
+                                <div class="feature-icon" aria-hidden="true">🧠</div>
+                                <h3 itemprop="name">AI Organization</h3>
+                                <p itemprop="description">Smart AI analyzes your description and file type to find the perfect folder</p>
+                            </article>
+                            <article class="feature-card" itemscope itemtype="https://schema.org/Thing">
+                                <div class="feature-icon" aria-hidden="true">⚡</div>
+                                <h3 itemprop="name">Save Time</h3>
+                                <p itemprop="description">No more manually creating folders or searching for the right place</p>
+                            </article>
+                            <article class="feature-card" itemscope itemtype="https://schema.org/Thing">
+                                <div class="feature-icon" aria-hidden="true">💬</div>
+                                <h3 itemprop="name">Chat Coming Soon</h3>
+                                <p itemprop="description">Chat with your Google Drive coming soon</p>
+                            </article>
+                        </section>
 
                         <div class="cta-section">
-                            <button id="login-btn" class="btn btn-primary btn-large">
-                                <span class="btn-icon">🚀</span>
+                            <button id="login-btn" class="btn btn-primary btn-large" aria-label="Connect to Google Drive and start organizing your files">
+                                <span class="btn-icon" aria-hidden="true">🚀</span>
                                 <span>Try It Now - Connect Google Drive</span>
                             </button>
                             <p class="cta-note">Free to use • Open Source • Or <a href="https://github.com/tomtomtong/onlineChatForGoogleDrive" target="_blank" rel="noopener noreferrer" class="github-link">host it yourself</a></p>
                         </div>
 
-                        <div class="connect-section">
-                            <p class="connect-text">Connect Me: <a href="mailto:tomtomtongtong@gmail.com" class="connect-email">tomtomtongtong@gmail.com</a></p>
-                        </div>
+                        <!-- How It Works Section for SEO -->
+                        <section class="how-it-works" aria-labelledby="how-it-works-title">
+                            <h2 id="how-it-works-title" class="section-title">How It Works</h2>
+                            <ol class="steps-list">
+                                <li class="step-item">
+                                    <span class="step-number">1</span>
+                                    <div class="step-content">
+                                        <h4>Connect Your Google Drive</h4>
+                                        <p>Securely authenticate with Google OAuth. We only request the minimum permissions needed.</p>
+                                    </div>
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">2</span>
+                                    <div class="step-content">
+                                        <h4>Upload & Describe</h4>
+                                        <p>Select a file and add a brief description like "work documents" or "vacation photos".</p>
+                                    </div>
+                                </li>
+                                <li class="step-item">
+                                    <span class="step-number">3</span>
+                                    <div class="step-content">
+                                        <h4>AI Organizes for You</h4>
+                                        <p>Our AI analyzes your description and folder structure to place the file in the perfect location.</p>
+                                    </div>
+                                </li>
+                            </ol>
+                        </section>
 
-                        <div id="auth-error" class="auth-error-message" style="display: none; margin-top: 1rem; padding: 0.75rem; background: #fee; border: 1px solid #fcc; border-radius: 4px; color: #c33;"></div>
-                        <div id="auth-debug" style="display: none; margin-top: 1rem; padding: 0.75rem; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem; color: #666;"></div>
+                        <aside class="connect-section" aria-label="Contact Information">
+                            <p class="connect-text">Connect Me: <a href="mailto:tomtomtongtong@gmail.com" class="connect-email" itemprop="email">tomtomtongtong@gmail.com</a></p>
+                        </aside>
+
+                        <div id="auth-error" class="auth-error-message" style="display: none; margin-top: 1rem; padding: 0.75rem; background: #fee; border: 1px solid #fcc; border-radius: 4px; color: #c33;" role="alert" aria-live="polite"></div>
+                        <div id="auth-debug" style="display: none; margin-top: 1rem; padding: 0.75rem; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem; color: #666;" aria-hidden="true"></div>
                     </div>
-                </div>
+                </article>
 
-                <div id="authenticated-view" class="hidden">
+                <div id="authenticated-view" class="hidden" role="status" aria-live="polite">
                     <div class="user-info">
                         <h2>Connected to Google Drive</h2>
-                        <button id="logout-btn" class="btn btn-secondary">Sign Out</button>
+                        <button id="logout-btn" class="btn btn-secondary" aria-label="Sign out of Google Drive">Sign Out</button>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="upload-section" class="section hidden">
-                <h2>Upload Files</h2>
-                <div class="upload-area">
+            <!-- Upload Section -->
+            <section id="upload-section" class="section hidden" aria-labelledby="upload-title">
+                <h2 id="upload-title">Upload Files</h2>
+                <div class="upload-area" role="region" aria-label="File upload area">
                     <div class="upload-hint-container">
                         <label for="upload-hint-input" class="upload-hint-label">Describe where to organize this file (optional):</label>
                         <input type="text" id="upload-hint-input" class="upload-hint-input" 
-                            placeholder="e.g., 'work documents', 'vacation photos'" autocomplete="off" />
-                        <p class="upload-hint-help">AI will auto-organize based on your description, filename, and file type.</p>
+                            placeholder="e.g., 'work documents', 'vacation photos'" autocomplete="off" aria-describedby="upload-hint-help" />
+                        <p id="upload-hint-help" class="upload-hint-help">AI will auto-organize based on your description, filename, and file type.</p>
                     </div>
-                    <input type="file" id="file-input" style="display: none;" />
-                    <button id="upload-btn" class="btn btn-primary">Select File to Upload</button>
-                    <div id="upload-status" class="status-message"></div>
+                    <input type="file" id="file-input" style="display: none;" aria-label="Select file to upload" />
+                    <button id="upload-btn" class="btn btn-primary" aria-label="Select a file from your computer to upload">Select File to Upload</button>
+                    <div id="upload-status" class="status-message" role="status" aria-live="polite"></div>
                 </div>
-                <div id="upload-history" class="upload-history">
-                    <h3>Recent Uploads</h3>
-                    <div id="history-list"></div>
-                </div>
-            </div>
+                <aside id="upload-history" class="upload-history" aria-labelledby="history-title">
+                    <h3 id="history-title">Recent Uploads</h3>
+                    <div id="history-list" role="list"></div>
+                </aside>
+            </section>
 
-            <div id="folder-structure-section" class="section hidden">
+            <!-- Folder Structure Section -->
+            <section id="folder-structure-section" class="section hidden" aria-labelledby="folder-title">
                 <div class="folder-header">
-                    <h2>Google Drive Folder Structure</h2>
-                    <button id="refresh-folders-btn" class="btn btn-secondary">Refresh</button>
+                    <h2 id="folder-title">Google Drive Folder Structure</h2>
+                    <button id="refresh-folders-btn" class="btn btn-secondary" aria-label="Refresh folder structure">Refresh</button>
                 </div>
-                <div id="folder-structure-container">
-                    <div id="folder-loading" class="loading-message">Loading folder structure...</div>
+                <div id="folder-structure-container" role="tree" aria-label="Folder structure">
+                    <div id="folder-loading" class="loading-message" role="status" aria-live="polite">Loading folder structure...</div>
                     <div id="folder-tree" class="folder-tree"></div>
                 </div>
-            </div>
+            </section>
 
-            <div id="chatbot-section" class="section hidden">
+            <!-- Chatbot Section -->
+            <section id="chatbot-section" class="section hidden" aria-labelledby="chatbot-title">
                 <div class="chatbot-header">
-                    <h2>🤖 Google Drive Assistant</h2>
+                    <h2 id="chatbot-title">🤖 Google Drive Assistant</h2>
                     <p class="chatbot-subtitle">Ask me to create folders, move files, or help with your Google Drive</p>
                 </div>
-                <div id="chat-container" class="chat-container">
-                    <div id="chat-messages" class="chat-messages">
+                <div id="chat-container" class="chat-container" role="log" aria-label="Chat conversation">
+                    <div id="chat-messages" class="chat-messages" aria-live="polite">
                         <div class="chat-message bot-message">
                             <div class="message-content">
                                 <p>Hello! I'm your Google Drive assistant. I can help you create folders, move files, and search your Drive.</p>
                             </div>
                         </div>
                     </div>
-                    <div id="chat-input-container" class="chat-input-container">
+                    <div id="chat-input-container" class="chat-input-container" role="form" aria-label="Message input">
                         <input type="text" id="chat-input" class="chat-input" 
-                            placeholder="Type your message here..." autocomplete="off" />
-                        <button id="chat-send-btn" class="btn btn-primary chat-send-btn">Send</button>
+                            placeholder="Type your message here..." autocomplete="off" aria-label="Type a message to the assistant" />
+                        <button id="chat-send-btn" class="btn btn-primary chat-send-btn" aria-label="Send message">Send</button>
                     </div>
                 </div>
-            </div>
+            </section>
         </main>
+        
+        <!-- Footer for SEO -->
+        <footer class="site-footer" role="contentinfo">
+            <div class="footer-content">
+                <p class="footer-text">
+                    <strong>Open Source Google Drive Organizer</strong> - AI-powered file organization for Google Drive
+                </p>
+                <nav class="footer-links" aria-label="Footer navigation">
+                    <a href="https://github.com/tomtomtong/onlineChatForGoogleDrive" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    <span class="separator" aria-hidden="true">•</span>
+                    <a href="mailto:tomtomtongtong@gmail.com">Contact</a>
+                    <span class="separator" aria-hidden="true">•</span>
+                    <span>Made with ❤️ for the open source community</span>
+                </nav>
+                <p class="footer-keywords">
+                    <small>Keywords: Google Drive automation, AI file organizer, cloud storage management, open source productivity tool, self-hosted file manager, smart folder organization</small>
+                </p>
+            </div>
+        </footer>
     </div>
     <script type="module" src="app.js"></script>
 </body>

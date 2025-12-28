@@ -1,0 +1,303 @@
+# Open Source Google Drive Organizer - Complete Documentation
+
+## Overview
+
+Open Source Google Drive Organizer is a free, AI-powered web application that automatically organizes files uploaded to Google Drive. Using natural language processing and intelligent folder analysis, it determines the optimal location for each file based on user descriptions, filenames, and existing folder structures.
+
+---
+
+## Problem Statement
+
+Managing files in cloud storage is tedious. Users often:
+- Create inconsistent folder structures
+- Spend time manually navigating to the right folder
+- Forget where they stored important files
+- Struggle to maintain organized systems
+
+This tool solves these problems by using AI to handle file organization automatically.
+
+---
+
+## Feature Deep Dive
+
+### 1. AI-Powered Organization
+
+When uploading a file, users can provide a natural language hint like:
+- "work project documents"
+- "vacation photos from Italy"
+- "tax documents 2024"
+- "meeting notes from the marketing team"
+
+The AI system:
+1. Parses the user's description
+2. Analyzes the filename and file type
+3. Scans the existing Google Drive folder structure
+4. Identifies matching or related folders
+5. Creates new folders if needed
+6. Places the file in the optimal location
+
+### 2. Google Drive Integration
+
+The application uses Google OAuth 2.0 for secure authentication:
+- Minimal permission scope (drive.file, drive.metadata.readonly)
+- No password storage
+- Token refresh handled automatically
+- Secure session management with HTTP-only cookies
+
+### 3. Folder Structure Visualization
+
+Users can view their entire Google Drive folder hierarchy:
+- Expandable/collapsible tree view
+- Visual folder icons
+- Subfolder counts
+- Refresh capability
+
+### 4. Self-Hosting Capability
+
+The open-source nature allows complete control:
+- Deploy on Railway with one click
+- Use Vercel for serverless deployment
+- Run on any VPS with Node.js
+- Customize AI models and prompts
+- Use your own API keys
+
+---
+
+## Architecture
+
+### Frontend (frontend/)
+- Pure JavaScript (no framework dependencies)
+- Vite for development and building
+- Responsive CSS with modern gradients
+- Progressive enhancement approach
+
+### Backend (server/)
+- Express.js REST API
+- Passport.js for OAuth handling
+- Session-based authentication
+- OpenRouter for AI API access
+
+### Data Flow
+1. User authenticates via Google OAuth
+2. Frontend receives session cookie
+3. File upload goes to Express server
+4. Server calls OpenRouter AI with file context
+5. AI returns organization suggestion
+6. Server creates folders if needed via Google Drive API
+7. File is moved to target location
+8. Success response returned to frontend
+
+---
+
+## Environment Variables
+
+Required for deployment:
+
+```
+GOOGLE_CLIENT_ID=your_google_oauth_client_id
+GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
+OPENROUTER_API_KEY=your_openrouter_api_key
+SESSION_SECRET=random_secure_string
+NODE_ENV=production
+```
+
+Optional:
+```
+BACKEND_URL=https://your-domain.com
+```
+
+---
+
+## API Reference
+
+### Authentication
+
+#### GET /api/auth/status
+Returns current authentication state.
+
+Response:
+```json
+{
+  "authenticated": true,
+  "user": {
+    "email": "user@example.com",
+    "name": "User Name"
+  }
+}
+```
+
+#### GET /auth/google
+Initiates Google OAuth flow. Redirects to Google.
+
+#### GET /oauth/callback
+OAuth callback handler. Redirects to frontend with status.
+
+#### POST /api/auth/logout
+Destroys session and logs user out.
+
+### File Operations
+
+#### POST /api/upload
+Upload file with optional organization hint.
+
+Request: multipart/form-data
+- file: File to upload
+- hint: Optional organization hint (string)
+
+Response:
+```json
+{
+  "success": true,
+  "message": "File uploaded and organized",
+  "file": {
+    "id": "drive_file_id",
+    "name": "filename.pdf",
+    "webViewLink": "https://drive.google.com/..."
+  },
+  "moved": true,
+  "targetFolder": "Work/Projects/2024"
+}
+```
+
+#### GET /api/files/search?q={query}
+Search files by name.
+
+Response:
+```json
+{
+  "success": true,
+  "items": [
+    {
+      "id": "file_id",
+      "name": "document.pdf",
+      "mimeType": "application/pdf"
+    }
+  ]
+}
+```
+
+#### GET /api/files/latest
+Get most recently modified file.
+
+### Folder Operations
+
+#### GET /api/folders
+Get complete folder structure.
+
+Response:
+```json
+{
+  "success": true,
+  "structure": {
+    "name": "My Drive",
+    "folders": [
+      {
+        "id": "folder_id",
+        "name": "Work",
+        "folders": [...]
+      }
+    ]
+  }
+}
+```
+
+#### POST /api/folders
+Create new folder.
+
+Request:
+```json
+{
+  "name": "New Folder Name",
+  "parentId": "optional_parent_folder_id"
+}
+```
+
+### AI Chat
+
+#### POST /api/chat
+Send message to AI assistant.
+
+Request:
+```json
+{
+  "messages": [
+    {"role": "user", "content": "Create a folder called Projects"}
+  ]
+}
+```
+
+---
+
+## Common Questions & Answers
+
+**Q: What permissions does this app require?**
+A: Only drive.file (files created by the app) and drive.metadata.readonly (to read folder structure). We cannot access files you didn't upload through our app.
+
+**Q: Is my data stored on your servers?**
+A: No. Files are uploaded directly to Google Drive. We only temporarily process files during upload. No file content is retained.
+
+**Q: Can I use this for a team/organization?**
+A: Yes, especially if you self-host. The app works with any Google account including Workspace accounts.
+
+**Q: What AI model powers the organization?**
+A: We use OpenRouter to access various AI models. The specific model can be configured when self-hosting.
+
+**Q: Is this really free?**
+A: Yes, both the hosted version and self-hosting are free. The only costs are your own hosting and API usage if self-hosting.
+
+**Q: How accurate is the AI organization?**
+A: It's highly accurate when you provide descriptive hints. It learns from your existing folder structure to make intelligent decisions.
+
+---
+
+## Deployment Guide
+
+### Railway (Recommended)
+
+1. Fork the GitHub repository
+2. Create new Railway project
+3. Connect GitHub repo
+4. Add environment variables
+5. Deploy automatically
+
+### Vercel
+
+1. Import GitHub repository
+2. Configure as Node.js project
+3. Add environment variables
+4. Deploy
+
+### Self-Hosted VPS
+
+```bash
+git clone https://github.com/tomtomtong/onlineChatForGoogleDrive
+cd onlineChatForGoogleDrive
+npm install
+npm run build
+npm start
+```
+
+---
+
+## Contributing
+
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+---
+
+## License
+
+MIT License - Free for personal and commercial use.
+
+---
+
+## Contact & Support
+
+- **Email**: tomtomtongtong@gmail.com
+- **GitHub Issues**: https://github.com/tomtomtong/onlineChatForGoogleDrive/issues
+- **Repository**: https://github.com/tomtomtong/onlineChatForGoogleDrive
+
