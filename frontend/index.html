@@ -3,23 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Drive Uploader</title>
+    <title>AI-Powered Google Drive Organizer - Smart File Management</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Google Drive File Uploader</h1>
+        <header class="main-header">
+            <h1>Drive Organizer</h1>
         </header>
 
         <main>
             <div id="auth-section" class="section">
-                <div id="login-view">
-                    <h2>Connect to Google Drive</h2>
-                    <p>Sign in with your Google account to upload files to Google Drive.</p>
-                    <button id="login-btn" class="btn btn-primary">Sign in with Google</button>
-                    <div id="auth-error" class="auth-error-message" style="display: none; margin-top: 1rem; padding: 0.75rem; background: #fee; border: 1px solid #fcc; border-radius: 4px; color: #c33;"></div>
-                    <div id="auth-debug" style="display: none; margin-top: 1rem; padding: 0.75rem; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem; color: #666;"></div>
+                <div id="login-view" class="hero-section">
+                    <div class="hero-content">
+                        <div class="hero-icon">🤖</div>
+                        <h1 class="hero-title">AI-Powered Google Drive Organizer</h1>
+                        <p class="hero-subtitle">Upload files with a simple description, and let AI automatically organize them into the perfect folders. No more manual sorting!</p>
+                        
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon">📤</div>
+                                <h3>Easy Upload</h3>
+                                <p>Just select your file and describe where it should go</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">🧠</div>
+                                <h3>AI Organization</h3>
+                                <p>Smart AI analyzes your description and file type to find the perfect folder</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">⚡</div>
+                                <h3>Save Time</h3>
+                                <p>No more manually creating folders or searching for the right place</p>
+                            </div>
+                        </div>
+
+                        <div class="cta-section">
+                            <button id="login-btn" class="btn btn-primary btn-large">
+                                <span class="btn-icon">🔐</span>
+                                <span>Get Started with Google</span>
+                            </button>
+                            <p class="cta-note">Free to use • Secure • No credit card required</p>
+                        </div>
+
+                        <div id="auth-error" class="auth-error-message" style="display: none; margin-top: 1rem; padding: 0.75rem; background: #fee; border: 1px solid #fcc; border-radius: 4px; color: #c33;"></div>
+                        <div id="auth-debug" style="display: none; margin-top: 1rem; padding: 0.75rem; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem; color: #666;"></div>
+                    </div>
                 </div>
 
                 <div id="authenticated-view" class="hidden">

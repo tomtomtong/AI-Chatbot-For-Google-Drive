@@ -206,7 +206,7 @@ class GoogleDriveUploader {
       authenticatedView.classList.remove('hidden');
       uploadSection.classList.remove('hidden');
       folderSection.classList.remove('hidden');
-      chatSection.classList.remove('hidden');
+      chatSection.classList.add('hidden'); // Hidden for now
       this.loadFolderStructure();
     } else {
       loginView.classList.remove('hidden');
