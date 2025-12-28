@@ -336,7 +336,7 @@ class GoogleDriveUploader {
   renderFolderStructure(structure) {
     const tree = document.getElementById('folder-tree');
     let html = `<div class="folder-structure"><div class="root-folder">
-      <div class="folder-header root-header"><span class="folder-icon">📁</span><span class="folder-name">${this.escapeHtml(structure.name)}</span></div>`;
+      <div class="folder-header root-header"><span class="folder-icon">[Folder]</span><span class="folder-name">${this.escapeHtml(structure.name)}</span></div>`;
     
     if (structure.folders?.length > 0) {
       html += '<div class="root-children">';
@@ -356,7 +356,7 @@ class GoogleDriveUploader {
   renderFolderItem(folder, level) {
     const hasFolders = folder.folders?.length > 0;
     let html = `<div class="folder-item" style="padding-left: ${level * 20}px;">
-      <div class="folder-header"><span class="folder-icon">${hasFolders ? '📁' : '📂'}</span>
+      <div class="folder-header"><span class="folder-icon">${hasFolders ? '[Folder]' : '[File]'}</span>
       <span class="folder-name">${this.escapeHtml(folder.name)}</span>
       ${hasFolders ? `<span class="folder-count">(${folder.folders.length})</span>` : ''}</div>`;
     
@@ -427,7 +427,7 @@ class GoogleDriveUploader {
       if (result.items.length === 0) return `No items found matching "${match[1]}"`;
       
       return `Found ${result.items.length} item(s):\n` + result.items.slice(0, 10).map(i => 
-        `• ${i.mimeType?.includes('folder') ? '📁' : '📄'} ${i.name}`
+        `• ${i.mimeType?.includes('folder') ? '[Folder]' : '[File]'} ${i.name}`
       ).join('\n');
     }
 
@@ -437,7 +437,7 @@ class GoogleDriveUploader {
       const result = await res.json();
       if (!result.success) return result.message;
       const f = result.file;
-      return `📄 Latest file: ${f.name}\nType: ${f.mimeType}\nLocation: ${f.parentName}\nModified: ${new Date(f.modifiedTime).toLocaleString()}`;
+      return `Latest file: ${f.name}\nType: ${f.mimeType}\nLocation: ${f.parentName}\nModified: ${new Date(f.modifiedTime).toLocaleString()}`;
     }
 
     // AI chat fallback
