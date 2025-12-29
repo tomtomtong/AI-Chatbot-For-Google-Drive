@@ -52,7 +52,10 @@ class GoogleDriveUploader {
   bindEvents() {
     document.getElementById('login-btn').addEventListener('click', () => this.handleLogin());
     document.getElementById('logout-btn').addEventListener('click', () => this.handleLogout());
-    document.getElementById('upload-btn').addEventListener('click', () => document.getElementById('file-input').click());
+    document.getElementById('upload-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('file-input').click();
+    });
     document.getElementById('file-input').addEventListener('change', (e) => this.handleUpload(e));
     document.getElementById('refresh-folders-btn').addEventListener('click', () => this.loadFolderStructure());
     document.getElementById('chat-send-btn').addEventListener('click', () => this.handleChatMessage());
