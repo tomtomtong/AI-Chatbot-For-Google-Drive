@@ -339,9 +339,9 @@
                 <h2 id="upload-title">Upload Files</h2>
                 <div class="upload-area" role="region" aria-label="File upload area">
                     <div class="upload-hint-container">
-                        <label for="upload-hint-input" class="upload-hint-label">Describe where to organize these files (optional):</label>
+                        <label for="upload-hint-input" class="upload-hint-label">Describe where to organize these files <span class="required-indicator">*</span>:</label>
                         <input type="text" id="upload-hint-input" class="upload-hint-input" 
-                            placeholder="e.g., 'work documents', 'vacation photos'" autocomplete="off" aria-describedby="upload-hint-help" />
+                            placeholder="e.g., 'work documents', 'vacation photos'" autocomplete="off" aria-describedby="upload-hint-help" required />
                         <p id="upload-hint-help" class="upload-hint-help">AI will auto-organize based on your description, filename, and file type.</p>
                     </div>
                     <input type="file" id="file-input" multiple style="display: none;" aria-label="Select files to upload" />

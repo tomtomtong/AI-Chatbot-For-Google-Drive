@@ -52,10 +52,7 @@ class GoogleDriveUploader {
   bindEvents() {
     document.getElementById('login-btn').addEventListener('click', () => this.handleLogin());
     document.getElementById('logout-btn').addEventListener('click', () => this.handleLogout());
-    document.getElementById('upload-btn').addEventListener('click', (e) => {
-      e.preventDefault();
-      document.getElementById('file-input').click();
-    });
+    document.getElementById('upload-btn').addEventListener('click', () => document.getElementById('file-input').click());
     document.getElementById('file-input').addEventListener('change', (e) => this.handleUpload(e));
     document.getElementById('refresh-folders-btn').addEventListener('click', () => this.loadFolderStructure());
     document.getElementById('chat-send-btn').addEventListener('click', () => this.handleChatMessage());
@@ -246,6 +243,15 @@ class GoogleDriveUploader {
     const hintInput = document.getElementById('upload-hint-input');
     const progressContainer = document.getElementById('upload-progress-container');
     
+    // Validate description is provided
+    const hint = hintInput.value.trim();
+    if (!hint) {
+      this.showStatus('Please enter a description for the files', 'error');
+      hintInput.focus();
+      e.target.value = '';
+      return;
+    }
+    
     uploadBtn.disabled = true;
     uploadBtn.textContent = files.length === 1 ? 'Uploading...' : `Uploading ${files.length} files...`;
     
@@ -254,8 +260,6 @@ class GoogleDriveUploader {
       progressContainer.style.display = 'block';
       progressContainer.innerHTML = '';
     }
-
-    const hint = hintInput.value.trim();
     let successCount = 0;
     let errorCount = 0;
     let movedCount = 0;
