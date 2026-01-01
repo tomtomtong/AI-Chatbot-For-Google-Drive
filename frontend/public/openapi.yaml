@@ -20,7 +20,7 @@ info:
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://onlinechatforgoogledrive.up.railway.app
+  - url: https://chatgoogledrive.com
     description: Production server
 
 paths:

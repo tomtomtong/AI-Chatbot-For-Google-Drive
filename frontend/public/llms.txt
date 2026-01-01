@@ -2,6 +2,8 @@
 
 > An open source AI-powered tool that automatically organizes your Google Drive files. Try it free or host it yourself.
 
+**Website**: https://chatgoogledrive.com/
+
 ## What This App Does
 
 Open Source Google Drive Organizer is a free, web-based productivity tool that helps users organize files in Google Drive using artificial intelligence. When you upload a file with a natural language description, the AI analyzes your description, filename, and existing folder structure to automatically place the file in the most appropriate location.
@@ -34,7 +36,7 @@ Open Source Google Drive Organizer is a free, web-based productivity tool that h
 
 ## Getting Started
 
-1. Visit the hosted version at the main URL
+1. Visit the hosted version at https://chatgoogledrive.com/
 2. Click "Connect Google Drive" to authenticate securely with Google
 3. Select a file to upload and optionally describe where it should go
 4. The AI will automatically organize the file into the best folder

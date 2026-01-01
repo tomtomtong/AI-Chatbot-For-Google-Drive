@@ -1,8 +1,12 @@
 # Open Source Google Drive Organizer - Complete Documentation
 
+**Website**: https://chatgoogledrive.com/
+
 ## Overview
 
 Open Source Google Drive Organizer is a free, AI-powered web application that automatically organizes files uploaded to Google Drive. Using natural language processing and intelligent folder analysis, it determines the optimal location for each file based on user descriptions, filenames, and existing folder structures.
+
+Visit https://chatgoogledrive.com/ to try it now!
 
 ---
 

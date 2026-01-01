@@ -1,15 +1,15 @@
 # Robots.txt for Open Source Google Drive Organizer
-# https://onlinechatforgoogledrive.up.railway.app/
+# https://chatgoogledrive.com/
 
 User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://onlinechatforgoogledrive.up.railway.app/sitemap.xml
+Sitemap: https://chatgoogledrive.com/sitemap.xml
 
 # LLM-friendly content
-# llms.txt: https://onlinechatforgoogledrive.up.railway.app/llms.txt
-# llms-full.txt: https://onlinechatforgoogledrive.up.railway.app/llms-full.txt
+# llms.txt: https://chatgoogledrive.com/llms.txt
+# llms-full.txt: https://chatgoogledrive.com/llms-full.txt
 
 # Disallow API and auth routes from indexing
 Disallow: /api/
